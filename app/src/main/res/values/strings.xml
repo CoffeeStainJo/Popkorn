@@ -2,4 +2,9 @@
     <string name="app_name">Popkorn</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="pref_sort_order">sortorder</string>
+    <string name="pref_sort_order_label">Sort movies by</string>
+    <string name="pref_sort_order_default">popular</string>
+    <string name="title_settings_activity">Settings</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>
