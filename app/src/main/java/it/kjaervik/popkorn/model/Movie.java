@@ -44,18 +44,6 @@ public class Movie implements Parcelable {
         }
     }
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
-
     public static List<Movie> fromJson(JSONArray jsonObjects) {
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < jsonObjects.length(); i++) {
@@ -68,6 +56,18 @@ public class Movie implements Parcelable {
         }
         return movies;
     }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public String getPosterImageUri() {
         return posterImageUri;
@@ -98,5 +98,49 @@ public class Movie implements Parcelable {
                 ", userRating=" + userRating +
                 ", releaseDate='" + releaseDate + '\'' +
                 '}';
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPosterImageUri(String posterImageUri) {
+        this.posterImageUri = posterImageUri;
+    }
+
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+    }
+
+    public double getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(double userRating) {
+        this.userRating = userRating;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }

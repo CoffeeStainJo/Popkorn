@@ -1,8 +1,11 @@
 package it.kjaervik.popkorn;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -76,8 +79,13 @@ public class DiscoveryFragment extends Fragment {
 
         String sortOrderPreference = getSortOrderPreference();
 
-        if (movies.isEmpty())
-            new FetchMovieTask(movieAdapter, movies).execute(sortOrderPreference);
+        if (movies.isEmpty()) {
+            FetchMovieTask task = new FetchMovieTask(movieAdapter, movies);
+            if (task.isOnline(getActivity()))
+                task.execute(sortOrderPreference);
+            else
+                Log.d(LOG_TAG, "No Internet Connectivity");
+        }
     }
 
     private String getSortOrderPreference() {

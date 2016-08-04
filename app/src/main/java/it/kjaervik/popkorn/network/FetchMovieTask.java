@@ -1,5 +1,8 @@
 package it.kjaervik.popkorn.network;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -136,5 +139,12 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error closing stream: ", e);
         }
+    }
+
+    public boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
