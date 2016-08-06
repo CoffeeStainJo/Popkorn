@@ -1,13 +1,14 @@
 package it.kjaervik.popkorn;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class DiscoveryActivity extends Activity {
+public class DiscoveryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = DiscoveryActivity.class.getSimpleName();
 
@@ -15,6 +16,9 @@ public class DiscoveryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         Log.d(LOG_TAG, "onCreate()");
     }
 

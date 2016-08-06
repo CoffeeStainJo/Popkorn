@@ -38,12 +38,12 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
     }
 
     @Override
-    protected List<Movie> doInBackground(String... params) {
+    protected List<Movie> doInBackground(String... queryParameters) {
 
-        if (params.length == 0)
+        if (queryParameters.length == 0)
             return null;
 
-        return fetchMovieData(params[0]);
+        return fetchMovieData(queryParameters[0]);
     }
 
     private List<Movie> fetchMovieData(String sortOrder) {
