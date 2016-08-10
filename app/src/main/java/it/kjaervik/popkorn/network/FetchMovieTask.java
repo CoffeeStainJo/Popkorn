@@ -27,21 +27,18 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
 
     private static final String LOG_TAG = FetchMovieTask.class.getSimpleName();
     private ArrayAdapter<Movie> adapter;
-    private List<Movie> moviesList;
 
     private HttpURLConnection urlConnection;
     private BufferedReader bufferedReader;
 
-    public FetchMovieTask(ArrayAdapter<Movie> adapter, List<Movie> movies) {
+    public FetchMovieTask(ArrayAdapter<Movie> adapter) {
         this.adapter = adapter;
-        this.moviesList = movies;
     }
 
     @Override
     protected List<Movie> doInBackground(String... queryParameters) {
 
-        if (queryParameters.length == 0)
-            return null;
+        if (queryParameters.length == 0) return null;
 
         return fetchMovieData(queryParameters[0]);
     }
@@ -56,6 +53,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
         try {
             InputStream inputStream = makeHttpRequestToTheMovieDBApi(sortOrder);
             StringBuffer buffer = readResponseFromInputStream(inputStream);
+
             if (buffer == null) return null;
 
             moviesJsonString = buffer.toString();
@@ -121,16 +119,16 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
         if (movies != null) {
             adapter.clear();
             adapter.addAll(movies);
-            moviesList.addAll(movies);
+            adapter.notifyDataSetChanged();
         }
     }
 
     private void cleanup() {
         if (urlConnection != null)
             urlConnection.disconnect();
-        if (bufferedReader != null) {
+        if (bufferedReader != null)
             closeReader();
-        }
+
     }
 
     private void closeReader() {

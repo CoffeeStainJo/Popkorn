@@ -1,13 +1,9 @@
 package it.kjaervik.popkorn;
 
-import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,19 +28,18 @@ public class DiscoveryFragment extends Fragment {
     private MovieAdapter movieAdapter;
     private List<Movie> movies = new ArrayList<>();
 
-    public DiscoveryFragment() {}
+    public DiscoveryFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.d(LOG_TAG, "onCreateView()");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Construct the data source
         movieAdapter = new MovieAdapter(getActivity(), new ArrayList<Movie>());
 
-        Log.d(LOG_TAG, "onCreateView()");
         GridView gridview = (GridView) rootView.findViewById(R.id.movie_grid);
 
         gridview.setAdapter(movieAdapter);
@@ -56,10 +50,9 @@ public class DiscoveryFragment extends Fragment {
                 // selected item
                 Movie movie = movieAdapter.getItem(position);
 
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DetailActivity.class);
                 intent.putExtra("movie", movie);
                 startActivity(intent);
-
             }
         });
         return rootView;
@@ -68,9 +61,8 @@ public class DiscoveryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null && !savedInstanceState.containsKey("movies")){
+        if (savedInstanceState != null && savedInstanceState.containsKey("movies"))
             movies = savedInstanceState.getParcelableArrayList("movies");
-        }
     }
 
     @Override
@@ -80,25 +72,29 @@ public class DiscoveryFragment extends Fragment {
         String sortOrderPreference = getSortOrderPreference();
 
         if (movies.isEmpty()) {
-            FetchMovieTask task = new FetchMovieTask(movieAdapter, movies);
+            FetchMovieTask task = new FetchMovieTask(movieAdapter);
             if (task.isOnline(getActivity()))
                 task.execute(sortOrderPreference);
             else
                 Log.d(LOG_TAG, "No Internet Connectivity");
+        } else {
+            movieAdapter.clear();
+            movieAdapter.addAll(movies);
+            movieAdapter.notifyDataSetChanged();
         }
     }
 
     private String getSortOrderPreference() {
         return PreferenceManager.getDefaultSharedPreferences(getActivity())
-                    .getString(
-                            getString(R.string.pref_sort_order),
-                            getString(R.string.pref_sort_order_default)
-                    );
+                .getString(
+                        getString(R.string.pref_sort_order),
+                        getString(R.string.pref_sort_order_default)
+                );
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("movies", (ArrayList<Movie>)movies);
+        outState.putParcelableArrayList("movies", (ArrayList<? extends Parcelable>) movieAdapter.getMovies());
         super.onSaveInstanceState(outState);
     }
 }

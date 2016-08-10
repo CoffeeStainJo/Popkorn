@@ -16,6 +16,6 @@ public final class TheMovieDB {
     public static final String MOVIE_USER_RATING = "vote_average";
     public static final String MOVIE_RELEASE_DATE = "release_date";
 
-    public static final String IMAGE_SIZE = "w185";
+    public static final String IMAGE_SIZE = "w500";
 
 }

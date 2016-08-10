@@ -2,6 +2,7 @@ package it.kjaervik.popkorn.util;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +18,17 @@ import it.kjaervik.popkorn.model.Movie;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
+    private final Context context;
+    private List<Movie> movies;
+
     public MovieAdapter(Activity context, List<Movie> movies) {
         super(context, 0, movies);
+        this.context = context;
+        this.movies = movies;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         Movie movie = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
@@ -32,7 +37,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         if (convertView == null) {
             // If there's no view to re-use, inflate a brand new view for row
             viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
+            LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.grid_item_movie, parent, false);
             // Lookup view for data population & populate the data into the template view using the data object
             // Populate the data into the template view using the data object
@@ -45,7 +50,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         }
 
         Picasso
-                .with(getContext())
+                .with(context)
                 .load(MovieDataParser.resolvePosterPathFromStringPath(movie.getPosterImageUri()))
                 .into(viewHolder.poster);
 
@@ -55,5 +60,9 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     // View lookup cache
     private static class ViewHolder {
         ImageView poster;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
     }
 }

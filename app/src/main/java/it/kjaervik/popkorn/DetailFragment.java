@@ -8,11 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import it.kjaervik.popkorn.model.Movie;
 import it.kjaervik.popkorn.util.MovieDataParser;
@@ -31,8 +28,9 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Intent intent = getActivity().getIntent();
-        Movie movie = intent.getParcelableExtra("movie");
+        Movie movie = getActivity()
+                .getIntent()
+                .getParcelableExtra("movie");
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
@@ -60,6 +58,4 @@ public class DetailFragment extends Fragment {
         synopsis = (TextView)rootView.findViewById(R.id.synopsis);
         thumbnail = (ImageView)rootView.findViewById(R.id.poster_thumbnail);
     }
-
-
 }

@@ -16,7 +16,7 @@ public class MovieDataParser {
         JSONObject apiResponse = new JSONObject(moviesJsonString);
         JSONArray movies = apiResponse.getJSONArray(TheMovieDB.API_RESULTS);
 
-        return Movie.fromJson(movies);
+        return Movie.getMoviesFromJsonArray(movies);
     }
 
     public static String resolvePosterPathFromStringPath(String path) {

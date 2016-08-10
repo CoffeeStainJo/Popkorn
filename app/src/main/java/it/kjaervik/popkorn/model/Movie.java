@@ -32,20 +32,25 @@ public class Movie implements Parcelable {
     // Constructor to convert a JSON object into a Java class instance
     // Decodes movie json into movie model object
     public Movie(JSONObject jsonMovie) {
+
         try{
+
             this.Id = jsonMovie.getString(TheMovieDB.MOVIE_ID);
             this.title = jsonMovie.getString(TheMovieDB.MOVIE_TITLE);
             this.posterImageUri = jsonMovie.getString(TheMovieDB.MOVIE_POSTER_PATH).replaceAll("/", "");
             this.synopsis = jsonMovie.getString(TheMovieDB.MOVIE_SYNOPSIS);
             this.userRating = Double.parseDouble(jsonMovie.getString(TheMovieDB.MOVIE_USER_RATING));
             this.releaseDate = (jsonMovie.getString(TheMovieDB.MOVIE_RELEASE_DATE));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static List<Movie> fromJson(JSONArray jsonObjects) {
+    public static List<Movie> getMoviesFromJsonArray(JSONArray jsonObjects) {
+
         List<Movie> movies = new ArrayList<>();
+
         for (int i = 0; i < jsonObjects.length(); i++) {
 
             try {
