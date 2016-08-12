@@ -1,8 +1,5 @@
 package it.kjaervik.popkorn.network;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -13,7 +10,6 @@ import org.json.JSONException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -38,9 +34,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
     @Override
     protected List<Movie> doInBackground(String... queryParameters) {
 
-        if (queryParameters.length == 0) return null;
-
-        return fetchMovieData(queryParameters[0]);
+        return (queryParameters.length == 0) ? null : fetchMovieData(queryParameters[0]);
     }
 
     private List<Movie> fetchMovieData(String sortOrder) {
@@ -52,7 +46,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
 
         try {
             InputStream inputStream = makeHttpRequestToTheMovieDBApi(sortOrder);
-            StringBuffer buffer = readResponseFromInputStream(inputStream);
+            StringBuffer buffer = NetworkUtils.readResponseFromInputStream(inputStream, bufferedReader);
 
             if (buffer == null) return null;
 
@@ -87,24 +81,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
                 .build();
     }
 
-    private StringBuffer readResponseFromInputStream(InputStream inputStream) throws IOException {
-        StringBuffer buffer = new StringBuffer();
-
-        if (inputStream == null) return null;
-
-        bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-        String inputLine;
-
-        while ((inputLine = bufferedReader.readLine()) != null)
-            buffer.append(inputLine).append("\n");
-
-        if (buffer.length() == 0) // no point in parsing
-            return null;
-
-        return buffer;
-    }
-
     private List<Movie> getMovies(String moviesJsonString) {
         try {
             return MovieDataParser.getMovieDataFromJson(moviesJsonString);
@@ -137,12 +113,5 @@ public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>> {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error closing stream: ", e);
         }
-    }
-
-    public boolean isOnline(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

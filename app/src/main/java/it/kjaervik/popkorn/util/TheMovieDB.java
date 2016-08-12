@@ -8,6 +8,9 @@ public final class TheMovieDB {
 
     public static final String APIKEY_PARAM = "api_key";
 
+    public static final String VIDEO_URL_PATH = "videos";
+    public static final String REVIEW_URL_PATH = "reviews";
+
     public static final String API_RESULTS = "results";
     public static final String MOVIE_ID = "id";
     public static final String MOVIE_POSTER_PATH = "poster_path";

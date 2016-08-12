@@ -19,14 +19,26 @@ public class Movie implements Parcelable {
     private String synopsis;
     private double userRating;
     private String releaseDate;
+    private List<String> videos;
+    private List<String> reviews;
+
+    public Movie() {
+
+        videos = new ArrayList<>();
+        reviews = new ArrayList<>();
+
+    }
 
     private Movie(Parcel in) {
+        this();
         Id = in.readString();
         title = in.readString();
         posterImageUri = in.readString();
         synopsis = in.readString();
         userRating = in.readDouble();
         releaseDate = in.readString();
+        in.readStringList(videos);
+        in.readStringList(reviews);
     }
 
     // Constructor to convert a JSON object into a Java class instance
@@ -91,6 +103,8 @@ public class Movie implements Parcelable {
         dest.writeString(synopsis);
         dest.writeDouble(userRating);
         dest.writeString(releaseDate);
+        dest.writeStringList(videos);
+        dest.writeStringList(reviews);
     }
 
     @Override
@@ -102,6 +116,8 @@ public class Movie implements Parcelable {
                 ", synopsis='" + synopsis + '\'' +
                 ", userRating=" + userRating +
                 ", releaseDate='" + releaseDate + '\'' +
+                ", videos=" + videos +
+                ", reviews=" + reviews +
                 '}';
     }
 
@@ -121,31 +137,24 @@ public class Movie implements Parcelable {
         this.title = title;
     }
 
-    public void setPosterImageUri(String posterImageUri) {
-        this.posterImageUri = posterImageUri;
-    }
-
     public String getSynopsis() {
         return synopsis;
-    }
-
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
     }
 
     public double getUserRating() {
         return userRating;
     }
 
-    public void setUserRating(double userRating) {
-        this.userRating = userRating;
-    }
-
     public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    public List<String> getVideos() {
+        return videos;
     }
+
+    public List<String> getReviews() {
+        return reviews;
+    }
+
 }

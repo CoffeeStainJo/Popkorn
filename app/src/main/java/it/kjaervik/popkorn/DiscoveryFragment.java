@@ -17,6 +17,7 @@ import java.util.List;
 
 import it.kjaervik.popkorn.model.Movie;
 import it.kjaervik.popkorn.network.FetchMovieTask;
+import it.kjaervik.popkorn.network.NetworkUtils;
 import it.kjaervik.popkorn.util.MovieAdapter;
 
 /**
@@ -73,7 +74,7 @@ public class DiscoveryFragment extends Fragment {
 
         if (movies.isEmpty()) {
             FetchMovieTask task = new FetchMovieTask(movieAdapter);
-            if (task.isOnline(getActivity()))
+            if (NetworkUtils.isOnline(getActivity()))
                 task.execute(sortOrderPreference);
             else
                 Log.d(LOG_TAG, "No Internet Connectivity");

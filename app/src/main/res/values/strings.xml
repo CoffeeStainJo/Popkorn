@@ -9,4 +9,5 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="movie_content_description">A movie thumbnail</string>
     <string name="movie_detail_title">Title</string>
+    <string name="movie_reviews_string">Reviews</string>
 </resources>
