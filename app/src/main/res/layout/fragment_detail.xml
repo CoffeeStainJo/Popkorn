@@ -95,11 +95,25 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ListView
+            <TextView
+                android:id="@+id/movie_trailers_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-sarif"
+                android:text="@string/movie_trailers_header"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/secondary_text" />
+
+            <GridView
                 android:nestedScrollingEnabled="true"
                 android:id="@+id/movie_trailers"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:numColumns="auto_fit"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:stretchMode="columnWidth"
+                android:gravity="center" />
         </LinearLayout>
 
         <LinearLayout

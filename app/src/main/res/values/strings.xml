@@ -6,8 +6,9 @@
     <string name="pref_sort_order_label">Sort movies by</string>
     <string name="pref_sort_order_default">popular</string>
     <string name="title_settings_activity">Settings</string>
-    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_detail">Details</string>
     <string name="movie_content_description">A movie thumbnail</string>
     <string name="movie_detail_title">Title</string>
     <string name="movie_reviews_string">Reviews</string>
+    <string name="movie_trailers_header">Trailers</string>
 </resources>

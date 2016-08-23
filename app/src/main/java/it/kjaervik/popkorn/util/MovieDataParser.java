@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import java.util.List;
 
 import it.kjaervik.popkorn.model.Movie;
+import it.kjaervik.popkorn.model.Review;
+import it.kjaervik.popkorn.model.Trailer;
 
 public class MovieDataParser {
 
@@ -49,9 +51,10 @@ public class MovieDataParser {
         for (int i = 0; i < movies.length(); i++) {
 
             if (requestType.equals(TheMovieDB.VIDEO_URL_PATH))
-                movie.getVideos().add(movies.getJSONObject(i).getString("key"));
+                movie.getVideos().add(new Trailer(movies.getJSONObject(i).getString("key")));
             else
-                movie.getReviews().add(movies.getJSONObject(i).getString("url"));
+//                movie.getReviews().add(movies.getJSONObject(i).getString("url"));
+                movie.getReviews().add(new Review(movies.getJSONObject(i).getString("url")));
         }
 
         Log.d(LOG_TAG, movie.toString());

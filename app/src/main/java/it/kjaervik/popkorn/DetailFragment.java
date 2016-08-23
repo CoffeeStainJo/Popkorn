@@ -1,16 +1,18 @@
 package it.kjaervik.popkorn;
 
 import android.app.ActionBar;
-import android.app.Fragment;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,6 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import it.kjaervik.popkorn.model.Movie;
+import it.kjaervik.popkorn.model.Trailer;
 import it.kjaervik.popkorn.network.NetworkUtils;
 import it.kjaervik.popkorn.util.MovieDataParser;
 import it.kjaervik.popkorn.util.TheMovieDB;
@@ -42,7 +45,7 @@ public class DetailFragment extends Fragment {
     private TextView title, releaseDate, userRating, synopsis;
     private ImageView thumbnail;
     private Movie movie;
-    private ListView movieTrailers;
+    private GridView movieTrailers;
     private TrailerAdapter trailerDapter;
     private LinearLayout reviews;
 
@@ -62,17 +65,14 @@ public class DetailFragment extends Fragment {
         getUiElements(rootView);
         populateUiElementsFromMovie(movie);
 
-//        adapter = new ArrayAdapter<>(getActivity(), R.layout.movie_trailer_item, R.id.movie_trailer_item_url);
-
-        trailerDapter = new TrailerAdapter(getActivity(), new ArrayList<String>());
-
-//        movieTrailers.setAdapter(adapter);
+        trailerDapter = new TrailerAdapter(getActivity(), new ArrayList<Trailer>());
         movieTrailers.setAdapter(trailerDapter);
 
         movieTrailers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String uri = (String)parent.getItemAtPosition(position);
+
+                String uri = ((Trailer) parent.getItemAtPosition(position)).getKey();
                 Toast.makeText(getActivity(), uri, Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com").buildUpon()
@@ -102,7 +102,7 @@ public class DetailFragment extends Fragment {
         userRating = (TextView) rootView.findViewById(R.id.user_rating);
         synopsis = (TextView) rootView.findViewById(R.id.synopsis);
         thumbnail = (ImageView) rootView.findViewById(R.id.poster_thumbnail);
-        movieTrailers = (ListView) rootView.findViewById(R.id.movie_trailers);
+        movieTrailers = (GridView) rootView.findViewById(R.id.movie_trailers);
         reviews = (LinearLayout) rootView.findViewById(R.id.reviews_container);
     }
 
@@ -111,7 +111,7 @@ public class DetailFragment extends Fragment {
         super.onStart();
         String[] queryParams = {movie.getId(), TheMovieDB.VIDEO_URL_PATH};
         new FetchMovieDetailsTask().execute(queryParams);
-        queryParams = new String[] {movie.getId(), TheMovieDB.REVIEW_URL_PATH};
+        queryParams = new String[]{movie.getId(), TheMovieDB.REVIEW_URL_PATH};
         new FetchMovieDetailsTask().execute(queryParams);
 
     }
@@ -159,7 +159,7 @@ public class DetailFragment extends Fragment {
 
             try {
                 return MovieDataParser.getMovieDetailsFromJson(moviesJsonString, type);
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;
@@ -216,7 +216,7 @@ public class DetailFragment extends Fragment {
                 Log.d(LOG_TAG, movie.getReviews().toString());
                 //reviews_container
                 TextView review = new TextView(getActivity());
-                review.setText(movie.getReviews().get(0));
+                review.setText(movie.getReviews().get(0).getUrl());
                 review.setLayoutParams(
                         new ActionBar.LayoutParams(
                                 ViewGroup.LayoutParams.WRAP_CONTENT,

@@ -19,8 +19,8 @@ public class Movie implements Parcelable {
     private String synopsis;
     private double userRating;
     private String releaseDate;
-    private List<String> videos;
-    private List<String> reviews;
+    private List<Trailer> videos;
+    private List<Review> reviews;
 
     public Movie() {
 
@@ -37,8 +37,9 @@ public class Movie implements Parcelable {
         synopsis = in.readString();
         userRating = in.readDouble();
         releaseDate = in.readString();
-        in.readStringList(videos);
-        in.readStringList(reviews);
+        videos = in.createTypedArrayList(Trailer.CREATOR);
+        reviews = in.createTypedArrayList(Review.CREATOR);
+
     }
 
     // Constructor to convert a JSON object into a Java class instance
@@ -103,8 +104,9 @@ public class Movie implements Parcelable {
         dest.writeString(synopsis);
         dest.writeDouble(userRating);
         dest.writeString(releaseDate);
-        dest.writeStringList(videos);
-        dest.writeStringList(reviews);
+        dest.writeTypedList(videos);
+        dest.writeTypedList(reviews);
+
     }
 
     @Override
@@ -149,11 +151,11 @@ public class Movie implements Parcelable {
         return releaseDate;
     }
 
-    public List<String> getVideos() {
+    public List<Trailer> getVideos() {
         return videos;
     }
 
-    public List<String> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 

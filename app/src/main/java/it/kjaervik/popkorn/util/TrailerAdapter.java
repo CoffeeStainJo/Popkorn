@@ -13,13 +13,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import it.kjaervik.popkorn.R;
+import it.kjaervik.popkorn.model.Trailer;
 
 
-public class TrailerAdapter extends ArrayAdapter<String> {
+public class TrailerAdapter extends ArrayAdapter<Trailer> {
 
     private final Context context;
 
-    public TrailerAdapter(Activity context, List<String> trailers) {
+    public TrailerAdapter(Activity context, List<Trailer> trailers) {
         super(context, 0, trailers);
         this.context = context;
     }
@@ -27,7 +28,7 @@ public class TrailerAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String trailer = getItem(position);
+        Trailer trailer = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
@@ -49,7 +50,7 @@ public class TrailerAdapter extends ArrayAdapter<String> {
 
         Picasso
                 .with(context)
-                .load(MovieDataParser.resolveYouTubeThumbnailFromUri(trailer))
+                .load(MovieDataParser.resolveYouTubeThumbnailFromUri(trailer.getKey()))
                 .into(viewHolder.thumbnail);
 
         return convertView;
